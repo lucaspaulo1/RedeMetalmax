@@ -9,6 +9,7 @@ class FluxoRede : Grafo
 	private:
 				
 	public:
+
 		int energiaTotal(); // Capacidade maxima da rede (max flow)
 		int energiaNaoAtendida(); // Energia que falta para os consumidores operarem efetivamente
 		int energiaPerdida(); // Energia desperdicada ao longo da rede

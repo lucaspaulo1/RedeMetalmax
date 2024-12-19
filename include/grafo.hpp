@@ -13,8 +13,10 @@ using namespace std;
  */
 enum TipoVertice
 {
+	FONTE = -1,
+	VERTEDOURO = -2,
 	GERADOR,
-	CONSUMIDOR,
+	CONSUMIDOR
 };
 
 /*
@@ -64,7 +66,7 @@ class Grafo
 		void addVertice(int u, int t); // Adiciona ponto(vertice) na rede 
 		void addAresta(int u, int v, int c); // Adiciona conexao(aresta) a rede(grafo)
 		
-		bool BFS(int s, int t); // Verifica se ha um caminho aumentante
+		bool bfs(); // Verifica se ha um caminho aumentante
 		int enviaFlow(int s, int t, int flow, int path[]); // Envia fluxo ao longo do caminho encontrado
 		
 };
