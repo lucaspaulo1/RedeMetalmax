@@ -13,10 +13,10 @@ using namespace std;
  */
 enum TipoVertice
 {
-	FONTE = -1,
-	VERTEDOURO = -2,
-	GERADOR,
-	CONSUMIDOR
+	FONTE = -2,
+	VERTEDOURO = -1,
+	GERADOR = 0,
+	CONSUMIDOR = 1
 };
 
 /*
@@ -24,8 +24,10 @@ enum TipoVertice
  */
 enum TipoAresta
 {
-	FORWARD,
-	BACKWARD
+	NORMAL, // Arestas do grafo normal (nao eh o grafo residual)
+	FORWARD, // Arestas na direcao da fonte ao vertedouro no grafo residual
+	BACKWARD, // Arestas na direcao contraria da fonte ao vertedouro no grafo residual
+	ARTF // Arestas 'artificiais' da fonte aos geradores ou dos consumidores ao vertedouro
 };
 
 
@@ -58,17 +60,27 @@ class Grafo
 {
 	private:
 		vector<Vertice> vertices; // Vetor de vertices para representar os pontos da rede
+		vector<vector<Aresta>> grafo; // Vetor de conexoes(arestas) para reprentar a rede
+		vector<vector<Aresta>> grafoResidual; // Vetor de conexoes(arestas) para representar o grafo residual
+
 		int v_tam; // Tamanho do vetor de vertices
-		vector<vector<Aresta>> grafo;
+		int fonte; // Representa o indice do vertice fonte (vertice por onde sai o fluxo) 
+		int vertedouro; // Representa o indice do vertice vertedouro(vertice para onde o fluxo vai)
+		
+		int garg; // Representa o fluxo atual da rede
+		int energiaRequerida;
 
 	public:
 		Grafo(int n); // Metodo construtor
 		void addVertice(int u, int t); // Adiciona ponto(vertice) na rede 
 		void addAresta(int u, int v, int c); // Adiciona conexao(aresta) a rede(grafo)
+		int verificaAresta(int u, int v); // Verifica se a aresta 'u' existe em 'v'		
 		
-		bool bfs(); // Verifica se ha um caminho aumentante
-		int enviaFlow(int s, int t, int flow, int path[]); // Envia fluxo ao longo do caminho encontrado
-		
+		void consomeEnergia(int u, int e); // Consome a energia 'e' que entra no vertice 'u'
+		bool bfs(vector<int>& pais); // Verifica se ha um caminho aumentante
+		int fluxoMaximo(); // Calcula o fluxo maximo da rede
+
+		void imprime(); // Imprime os grafos		
 };
 
 #endif

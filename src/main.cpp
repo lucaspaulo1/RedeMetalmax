@@ -27,6 +27,15 @@ int main()
 		g.addAresta(u, v, c); // Adiciona a conexao na rede
 	}
 
+	// Imprime o grafo
+	g.imprime();
+	
+	int maxFlow = g.fluxoMaximo();
+	
+	cout << endl << "Fluxo Maximo: " << maxFlow << endl;
+
+	g.imprime();
+
 	return 0;
 }
 
