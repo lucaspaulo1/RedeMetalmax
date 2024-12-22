@@ -83,7 +83,14 @@ void Grafo::consomeEnergia(int u, int e)
 	
 }
 
-bool Grafo::bfs(vector<int>& pais)
+static void atualizaFila(queue<int> &fila, vector<int> &pais, vector<bool> &visitados, int u, int v)
+{
+	fila.push(v);
+	pais.at(v) = u;
+	visitados.at(v) = true;
+}
+
+bool Grafo::bfs(vector<int> &pais)
 {
 	vector<bool> visitados(v_tam + ST, false);
 	queue<int> fila;
@@ -91,7 +98,6 @@ bool Grafo::bfs(vector<int>& pais)
 	fila.push(fonte); 
 	visitados.at(fonte) = true;
 	pais.at(fonte) = INVALIDO;
-	
 
 	while(!fila.empty())
 	{
@@ -102,7 +108,7 @@ bool Grafo::bfs(vector<int>& pais)
 		for(auto& v : grafoResidual.at(u))
 		{
 			// Verifica se o vertice foi visitado, se ele tem demanda e se existe uma aresta com capacidade sufiente  
-			if(!visitados.at(v.v) && v.capacidade > 0 && (vertices.at(v.v).demanda > 0 || vertices.at(v.v).tipo == GERADOR || vertices.at(v.v).tipo == VERTEDOURO) )
+			if(!visitados.at(v.v) && v.capacidade > 0 &&  (vertices.at(v.v).demanda > 0 || vertices.at(v.v).tipo == GERADOR || vertices.at(v.v).tipo == VERTEDOURO) )
 			{
 				
 				if(v.v == vertedouro) 
@@ -110,14 +116,13 @@ bool Grafo::bfs(vector<int>& pais)
 					pais.at(v.v) = u;
 					return true;
 				}
-
-				fila.push(v.v);
-				pais.at(v.v) = u;
-				visitados.at(v.v) = true;
+				atualizaFila(fila, pais, visitados, u, v.v);
 			}
+	
+				
 		}
 	}
-	
+
 	return false;
 }
 
@@ -135,52 +140,49 @@ int Grafo::verificaAresta(int u, int v)
 
 int Grafo::fluxoMaximo()
 {
-	int u, v;
 	vector<int> pais(v_tam + ST);
 	int maxFlow = 0;
+	int u,v;
 
 	while(bfs(pais)) // Enquanto existir caminho entre a fonte e o vertedouro
 	{
 		int gargalo = INFINITO;
 		int a, b, energia;
 
-		cout << "KKKKKKKKKKKK" << endl;
-
-		// Econtrar o gargalo da caminho minimo aumentatnte
 		for(v = vertedouro; v != fonte; v = pais.at(v))
 		{
-			u = pais.at(v);
-			cout << "\n\nu: " << u << "\nv: " << v << endl;
-		
-			// Procura o vertice 'v' na lista de adjcancia de 'u'
+			u = pais.at(v);	
+			cout << "\nu: " << u << " v: " << v << endl;
+
+			// Calcula gargalo do caminho 
 			a = verificaAresta(u, v);
-			if(a == INVALIDO) cout << "Aresta de [" << u << "] para [" << v << "] nao existe!" << endl;
 			
-			// Calcula o gargalo da caminho aumentante
-			//if(u == vertedouro) continue;
-			energia = vertices.at(v).demanda; // calcula a demanda de energia do vertice 'v'
-			gargalo = min(energia, grafoResidual.at(u).at(a).capacidade); // Calcula o minimo entre a capacidade da aresta e do vertice
-			consomeEnergia(u, gargalo); // Consome a energia que chega no vertice
-			cout << "Gargalo: " << garg << endl;
+			if(vertices.at(u).tipo == CONSUMIDOR)
+			{
+				energia = vertices.at(u).demanda;
+				cout << "capacidade da aresta de [" << u << "] ate [" << v << "]: " << grafoResidual.at(u).at(a).capacidade << endl;
+				gargalo = min(gargalo, grafoResidual.at(u).at(a).capacidade);
+				gargalo = min(gargalo, energia); // Pega o menor valor entre a capacidade da conexao e a demanda do consumidor
+				consomeEnergia(u, gargalo); // Faz o vertice consumir energia equivalente ao gargalo da conexao
+			}
+			else gargalo = min(gargalo, grafoResidual.at(u).at(a).capacidade);
+			cout << "gargalo: " << gargalo << endl;
+		
+
 		}
 
-		// Atualizar grafo residual
+		cout << "KKKKKKKKKKKKKKKKKKK";
 		for(v = vertedouro; v != fonte; v = pais.at(v))
 		{
 			u = pais.at(v);
-		
-			// Procura o vertice 'v' na lista de adjacencia de 'u'	
-			a = verificaAresta(u, v);
+
+			// Atualiza o grafo residual
 			b = verificaAresta(v, u);
-			if(a == INVALIDO) cout << "Aresta de [" << u << "] para [" << v << "] nao existe!" << endl;
-			if(b == INVALIDO) cout << "Aresta de [" << v << "] para [" << u << "] nao existe!" << endl;
-
-
-			// Atualiza o fluxo no caminho aumentante
-			grafoResidual.at(u).at(a).flow += gargalo;
-			grafoResidual.at(u).at(a).capacidade -= gargalo;
-			
-			grafoResidual.at(v).at(b).capacidade += gargalo;
+			grafoResidual.at(u).at(a).capacidade -= gargalo; // Atualiza a conexao do tipo FORWARD
+			grafoResidual.at(v).at(b).capacidade += gargalo; // Atualiza a conexao do tipo BACKWARD
+		
+			if(grafoResidual.at(u).at(a).tipo == FORWARD) grafo.at(u).at(a).flow += gargalo; 
+			else grafo.at(u).at(a).flow -= gargalo;
 		}
 
 		maxFlow += gargalo; // Atualiza fluxo maximo
@@ -211,8 +213,8 @@ void Grafo::imprime()
 		cout << "Vertice " << i << " : ";
 		for(auto& v : grafoResidual.at(i))
 		{
-			if((v.tipo == FORWARD && v.capacidade > 0) || v.tipo == ARTF) cout << "(" << v.v << "F" << " - " << v.flow << "|" << v.capacidade << ")" << " ";
-			if((v.tipo == BACKWARD && v.capacidade > 0) || v.tipo == ARTF) cout << "(" << v.v << "C" << " - " << v.flow << "|" << v.capacidade << ")" << " ";
+			if((v.tipo == FORWARD && v.capacidade > 0) || v.tipo == ARTF) cout << "(" << v.v << "F" << " - "  << v.capacidade << ")" << " ";
+			if((v.tipo == BACKWARD && v.capacidade > 0) || v.tipo == ARTF) cout << "(" << v.v << "C" << " - " << v.capacidade << ")" << " ";
 		}
 		cout << endl;
 	}
