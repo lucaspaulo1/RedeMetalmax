@@ -1,40 +1,41 @@
 #include "../include/grafo.hpp"
-#include "../include/fluxosRede.hpp"
+#include "../include/fluxoRede.hpp"
 
 #include <iostream>
+#include <tuple>
 #include <vector>
-
 
 int main()
 {
 	int n, m; // Representam o numero de vertices e de arestas, respectivamente
-	int u, v, t, c;
-
-	// Leitura das entradas
 	cin >> n >> m;
-	
-	Grafo g = Grafo(n);
 
-	for(int i = 0; i < n; i++)
+	FluxoRede MetalMax = FluxoRede(n, m); // Cria a representacao da Rede de Energia 
+
+	// Energia é desperdiçada ao longo da rede	
+	int energiaTotal = MetalMax.energiaTotal();
+	cout << energiaTotal << endl;
+
+	// Quantidae de energia que falta para os consumidores operarem efetivamente
+	int energiaNaoAtendida = MetalMax.energiaNaoAtendida();
+	cout << energiaNaoAtendida << endl;
+
+	// Quantidade de energia que é desperdiçada ao longo da rede
+	int energiaPerdida = MetalMax.energiaPerdida();
+	cout << energiaPerdida << endl;
+
+	// Conexoes que demandam mais energia da rede 
+	vector<tuple<int, int, int>> conexoesCriticas = MetalMax.conexoesCriticas();
+	long unsigned int tam = conexoesCriticas.size();
+	cout << tam << endl;
+	for(auto& t : conexoesCriticas)
 	{
-		cin >> u >> t; // Le o identificador do ponto na rede e o tipo do ponto
-		g.addVertice(u, t); // Adiciona o novo ponto na rede
+		int u = get<0>(t);
+		int v = get<1>(t);
+		int c = get<2>(t);
+		cout << u << " " << v << " " << c << endl;
 	}
 
-	for(int i = 0; i < m; i++)
-	{
-		cin >> u >> v >> c; // Le os pontos e a capacidade da aresta na rede
-		g.addAresta(u, v, c); // Adiciona a conexao na rede
-	}
-
-	// Imprime o grafo
-	g.imprime();
-	
-	int maxFlow = g.fluxoMaximo();
-	
-	cout << endl << "Fluxo Maximo: " << maxFlow << endl;
-
-	g.imprime();
 
 	return 0;
 }
