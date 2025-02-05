@@ -69,8 +69,8 @@ Para essa entrada temos a saı́da:
 5 6 15
 ```
 Temos 3 linhas, cada uma contendo um número referente aos diagnósticos descritos anteriormente.
-A primeira, temos ET otal > 0 que é a energia total que a rede comporta.
-A segunda, temos EM issing ≥ 0 que é a energia não-atendida.
+A primeira, temos ETotal > 0 que é a energia total que a rede comporta.
+A segunda, temos EMissing ≥ 0 que é a energia não-atendida.
 A terceira, temos ELoss ≥ 0 indicando a energia perdida ao longo da rede.
 Na quarta linha, temos um número PCritical indicando quantas conexões crı́ticas
 temos na rede. Nas próximas PCritical linhas, temos 3 números Vi , Vj e Eij indicando uma conexão que vai de Vi para Vj 
