@@ -1,0 +1,6 @@
+#ignorar arquivos .zip
+*.zip
+
+#ignorar pastas bin e obj
+bin/
+obj/
