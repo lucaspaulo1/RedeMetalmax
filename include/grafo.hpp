@@ -79,7 +79,6 @@ class Grafo
 		bool bfs(vector<int>& pais); // Verifica se ha um caminho aumentante
 		void consomeEnergia(int u, int e); // Faz o vertice consumir a energia que chega nele
 		int fluxoMaximo(); // Calcula o fluxo maximo da rede
-		int demandaUsada(); // Representa a demanda dos vertices satisfeitas pelo grafo residual		
 		vector<tuple<int, int, int>> arestasCheias(); // Representa as arestas cujas capacidades foram completamente atendidas		
 
 		// void atualizaGrafo(); // Atualiza os grafos

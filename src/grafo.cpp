@@ -202,27 +202,6 @@ int Grafo::fluxoMaximo()
 	return maxFlow;
 }
 
-int Grafo::demandaUsada()
-{
-	int total = 0;
-
-	for(auto& u : vertices) // Para cada vertice
-	{
-		int i = u.indice;
-		
-		if(u.tipo != GERADOR) continue; // Caso o vertice nao seja um gerador, parta para o proximo vertice
-
-		// Para cada vizinho do vertice 'i' 
-		for(auto& e : grafoResidual.at(i))
-		{
-			if(vertices.at(e.v).tipo != CONSUMIDOR) continue;
-			total += vertices.at(e.v).demanda;		
-		}
-	}
-
-	return total;
-}
-
 int Grafo::capGeradores()
 {
 	int total = 0;

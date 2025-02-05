@@ -10,6 +10,7 @@ using namespace std;
 FluxoRede::FluxoRede(int n, int m) : g(n) 
 {
 	int u, v, t, c;
+	demandaTotal = 0;
 
 	// Leitura das entradas
 	for(int i = 0; i < n; i++)
