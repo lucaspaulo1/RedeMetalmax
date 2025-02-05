@@ -9,7 +9,7 @@ considerando todos os geradores e conexões; a energia não-atendida, calculando
 O problema foi modelado usando grafos, e resolvido usando algoritmos de fluxo máximo.
 
 # Estrutura do projeto
-`
+```
 ├── include/
 │   ├── fluxoRede.hpp
 │   ├── grafo.hpp
@@ -22,7 +22,7 @@ O problema foi modelado usando grafos, e resolvido usando algoritmos de fluxo m�
 ├── tests/
 │   ├── 'Casos de Teste-20241223'/
 ├── Makefile 
-`
+```
 
 Obs: As pastas bin e obj permanecem vazias até que o programa seja compilado.
 
@@ -34,7 +34,7 @@ Para executar o projeto, é necessário ter:
 As entradas do programa são feitas via linha de comando.
 ## Exemplo
 Considere a entrada do exemplo a seguir:
-`
+```
 6 7
 1 0
 2 20
@@ -49,7 +49,7 @@ Considere a entrada do exemplo a seguir:
 1 6 30
 2 4 10
 5 6 15
-`
+```
 A primeira linha contém dois números inteiros V e E, onde V é o número de
 pontos na rede e E o número de conexões.
 Nas próximas V linhas, temos 2 números Vi e T , onde Vi é o identificador do ponto
@@ -60,14 +60,14 @@ identificadores de pontos na rede representando que entre eles existe uma conex�
 indo de Vi até Vj que possui capacidade máxima C > 0.
 
 Para essa entrada temos a saı́da:
-`
+```
 185
 5
 105
 2
 1 6 30
 5 6 15
-`
+```
 Temos 3 linhas, cada uma contendo um número referente aos diagnósticos descritos anteriormente.
 A primeira, temos ET otal > 0 que é a energia total que a rede comporta.
 A segunda, temos EM issing ≥ 0 que é a energia não-atendida.
@@ -78,11 +78,11 @@ e está operando em sua capacidade máxima Eij.
 
 # Uso
 Dentro do projeto, execute os seguintes comandos para compilar o projeto:
-`make clean`
-`make all`
+```make clean```
+```make all```
 O programa será lido pela entrada padrão através de linha de comando, como por exemplo:
-`./bin/tp2 < input.txt`
-Onde `input.txt` é um arquivo com uma entrada válida dentro
+```./bin/tp2 < input.txt```
+Onde `input.txt` é um arquivo com uma entrada válida dentro.
 
 
 
