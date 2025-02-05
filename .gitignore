@@ -1,9 +1,0 @@
-#ignorar o proprio arquivo gitignore
-.gitignore
-
-#ignorar arquivos .zip
-*.zip
-
-#ignorar pastas bin e obj
-bin/
-obj/
