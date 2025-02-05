@@ -21,12 +21,15 @@ OBJS = $(patsubst $(SRC)/%.cpp,$(OBJ)/%.o,$(SRCS))
 EXE = $(BIN)/$(NAME)
 
 # compila o programa
-all: $(EXE)
+all: create_dirs $(EXE)
+
+create_dirs: 
+	@mkdir -p $(OBJ) $(BIN) # -p evita erros se o diretorio ja existir
 
 $(EXE): $(OBJS)
 	@$(CC) -o $(EXE) $(OBJS) $(LIBS)
 
-$(OBJ)/%.o: $(SRC)/%.cpp $(wildcard $(INC)/*.h)
+$(OBJ)/%.o: $(SRC)/%.cpp $(wildcard $(INC)/*.h) | create_dirs # cria as pastas se elas nao existirem
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 # executa o programa
