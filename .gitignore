@@ -1,3 +1,6 @@
+#ignorar o proprio arquivo gitignore
+.gitignore
+
 #ignorar arquivos .zip
 *.zip
 
