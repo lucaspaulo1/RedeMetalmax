@@ -78,10 +78,17 @@ e está operando em sua capacidade máxima Eij.
 
 # Uso
 Dentro do projeto, execute os seguintes comandos para compilar o projeto:
-```make clean```
-```make all```
+```
+make clean
+```
+```
+make all
+```
+
 O programa será lido pela entrada padrão através de linha de comando, como por exemplo:
-```./bin/tp2 < input.txt```
+```
+./bin/tp2 < input.txt
+```
 Onde `input.txt` é um arquivo com uma entrada válida dentro.
 
 
